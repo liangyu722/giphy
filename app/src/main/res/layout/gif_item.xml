@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.android.giphy.ui.home.HomeViewModel" />
+
+        <variable
+            name="gif"
+            type="com.android.giphy.model.Gif" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/gif_imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:onClick="@{() -> viewmodel.gifClicked(gif)}"
+            app:image="@{gif.previewUrl}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

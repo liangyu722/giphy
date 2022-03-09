@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Giphy</string>
+
+    <string name="home_fragment_label">Home</string>
+
+    <string name="error_message">Error while loading gifs</string>
+</resources>
