@@ -2,6 +2,7 @@ package com.android.giphy.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,37 +12,38 @@ import java.text.DateFormat
 
 class HomeAdapter(
     private val viewModel: HomeViewModel
-) : ListAdapter<Gif, HomeAdapter.ViewHolder>(GifDiffUtilCallback()) {
+) : PagingDataAdapter<Gif, HomeAdapter.ViewHolder>(GifDiffUtilCallback()) {
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = getItem(position)
-            holder.bind(viewModel, item)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        getItem(position)?.let { gif ->
+            holder.bind(viewModel, gif)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
+    }
+
+    class ViewHolder private constructor(private val binding: GifItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(
+            viewModel: HomeViewModel,
+            item: Gif
+        ) {
+            binding.viewmodel = viewModel
+            binding.gif = item
+            binding.executePendingBindings()
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder.from(parent)
-        }
-
-        class ViewHolder private constructor(private val binding: GifItemBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(
-                viewModel: HomeViewModel,
-                item: Gif
-            ) {
-                binding.viewmodel = viewModel
-                binding.gif = item
-                binding.executePendingBindings()
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = GifItemBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
             }
-
-            companion object {
-                fun from(parent: ViewGroup): ViewHolder {
-                    val layoutInflater = LayoutInflater.from(parent.context)
-                    val binding = GifItemBinding.inflate(layoutInflater, parent, false)
-                    return ViewHolder(binding)
-                }
-            }
         }
+    }
 }
 
 class GifDiffUtilCallback : DiffUtil.ItemCallback<Gif>() {

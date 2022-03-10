@@ -28,10 +28,7 @@ class HomeViewModel @Inject constructor(
     val snackbarMessage: SharedFlow<Int> = _snackbarText
 
     val gifs = repository.gifFlow.asLiveData()
-
-    val gifPaging: Flow<PagingData<Data>> {
-        ret
-    }
+    val pageGifs = repository.pagingDataFlow
 
     init {
         viewModelScope.launch {

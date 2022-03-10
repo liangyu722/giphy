@@ -20,6 +20,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModel: HomeViewModel
     private lateinit var viewDataBinding: FragmentHomeBinding
+    private lateinit var adapter: HomeAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,7 +46,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListAdapter() {
-        viewDataBinding.gifRecyclerView.adapter = HomeAdapter(viewModel)
+        adapter = HomeAdapter(viewModel)
+        viewDataBinding.gifRecyclerView.adapter = adapter
         viewDataBinding.gifRecyclerView.layoutManager = GridLayoutManager(context, 3)
     }
 
@@ -67,9 +69,8 @@ class HomeFragment : Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.gifPaging.collectLatest {
-                it.
-                System.out.println("test")
+            viewModel.pageGifs.collectLatest {
+                adapter.submitData(it)
             }
         }
     }

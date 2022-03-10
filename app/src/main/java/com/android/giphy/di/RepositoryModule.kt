@@ -15,22 +15,26 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesGifCache() : GifCache {
+    fun providesGifCache(): GifCache {
         return DefaultGifCache(Dispatchers.IO)
     }
 
     @Provides
-    fun providesGiphyRepository(service: GiphyService, cache: GifCache) : GifRepository{
-        return DefaultGifRepository(service, cache, Dispatchers.IO)
+    fun providesGiphyRepository(
+        service: GiphyService,
+        cache: GifCache,
+        pagingSource: GifPagingSource
+    ): GifRepository {
+        return DefaultGifRepository(service, cache, Dispatchers.IO, pagingSource)
     }
 
     @Provides
-    fun providesDetailGiphyRepository(cache: GifCache) : DetailGifRepository{
+    fun providesDetailGiphyRepository(cache: GifCache): DetailGifRepository {
         return DefaultDetailGifRepository(cache, Dispatchers.IO)
     }
 
     @Provides
-    fun providesPagingSource(service: GiphyService) : GifPagingSource {
+    fun providesPagingSource(service: GiphyService): GifPagingSource {
         return GifPagingSource(service)
     }
 }
